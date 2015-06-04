@@ -1,5 +1,6 @@
 html {
   background-color:#E6E6E6;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Arial Narrow", Arial, "Lucida Grande", sans-serif;
 }
 
 body {
@@ -10,6 +11,11 @@ body {
 .container {
   border-radius:4px;
   background-color: white;
+}
+
+.branding img {
+  width:100%;
+  max-width:330px;
 }
 
 @mixin smallSizes() {
