@@ -1,5 +1,10 @@
+html {
+  background-color:#E6E6E6;
+}
+
 body {
   width:80%;
+  margin:0 auto;
 }
 
 @mixin smallSizes() {
