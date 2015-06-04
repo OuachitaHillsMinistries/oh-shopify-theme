@@ -1,0 +1,51 @@
+<article class="product" itemscope itemtype="http://schema.org/Product">
+  
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}" />
+  <meta itemprop="image" content="{{ product.featured_image.src | product_img_url: 'grande' }}" />
+  
+  <form action="/cart/add" method="post" enctype="multipart/form-data">
+    
+    <h1 class="entry-title" itemprop="name">{{ product.title }}</h1>
+    
+    <div class="sidebar">
+      {% include 'product-photos' %}
+      
+      {% if template == "product" %}
+      	{% include 'add-to-cart' %}
+      {% else if template == "product.donate" %}
+      	{% include 'add-to-cart-donate' %}
+      {% endif %}
+    </div>
+    
+    <div class="product-details">
+      
+      <div id="product-description" class="rte" itemprop="description">
+        {{ product.description }}
+      </div>
+      
+      {% comment %}
+      All themes by Shopify should support the Grapevine Reviews app out of the box.
+      https://apps.shopify.com/grapevine-reviews
+      {% endcomment %} 
+      <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+      
+      {% if collection %}
+        {% if collection.previous_product or collection.next_product %}
+        <div>     
+        {% if collection.previous_product %}
+          {% capture prev_url %}{{ collection.previous_product}}#content{% endcapture %}
+          <span class="left">{{ '&larr; Previous Product' | link_to: prev_url }}</span>
+        {% endif %}
+        {% if collection.next_product %}
+          {% capture next_url %}{{ collection.next_product}}#content{% endcapture %}
+          <span class="right">{{ 'Next Product &rarr;' | link_to: next_url }}</span>
+        {% endif %}
+        </div>
+        {% endif %}
+      {% endif %}
+      
+    </div><!-- .product-details -->
+
+  </form>
+
+</article>

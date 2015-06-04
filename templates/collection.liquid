@@ -1,0 +1,110 @@
+{% comment %}
+  Important notes about pagination:
+  - Never access collection.products before the opening paginate tag.
+  - Never paginate by more than 50.
+{% endcomment %}
+
+{% paginate collection.products by 6 %}
+
+{% comment %}
+  Re-use the .rte class wherever you output content that was added by a merchant using
+  the Rich Text Editor ( 'rte' stands for rich text editor ).
+  Style all HTML elements in that content the same way across the board.
+  Use the .rte class in your CSS to help maintain consistency.
+  Example: the h2 element should have the same size and color in:
+  - product descriptions
+  - collection descriptions
+  - page content
+  - blog post
+{% endcomment %}
+
+<article>
+
+  <h1>{{ collection.title }}</h1>
+  
+  {% comment %}
+    Listing all tags within the current collection.
+    Shopify uses product tags to manage subcategories inside collections.
+    See 'How do I create subcategories of products?' at 
+    http://bit.ly/1j1Dti4 for details.
+  {% endcomment %}
+  
+  {% if collection.all_tags.size > 0 %}
+  <ul class="collection-sub-categories clearfix buttons">
+    <li{% unless current_tags %} class="active"{% endunless %}>
+      {{ 'All' | link_to_remove_tag: current_tags.first }}
+    </li>
+    {% for tag in collection.all_tags %}
+    	{% if tag == 'hidden' %}
+    		{% comment %} Don't output it {% endcomment %}
+    	{% else %}
+          {% if current_tags contains tag %}
+          <li class="active">
+            {{ tag | link_to_remove_tag: tag }}
+          </li>
+          {% else %}
+          <li>
+            {{ tag | link_to_tag: tag }}
+          </li>
+          {% endif %}
+    	{% endif %}
+    {% endfor %}  
+  </ul>
+  {% endif %}
+  
+  {% comment %}
+    Collection sorting. Needs the JavaScript that is at the bottom of this file.
+  {% endcomment %}
+  {% if collection.products_count > 1 %}
+  <div>
+    <label>Sort by</label> 
+    <select class="sort-by">
+      <option value="manual">Featured</option>
+      <option value="price-ascending">Price: Low to High</option>
+      <option value="price-descending">Price: Hight to Low</option>
+      <option value="title-ascending">A-Z</option>
+      <option value="title-descending">Z-A</option>
+      <option value="created-ascending">Oldest to Newest</option>
+      <option value="created-descending">Newest to Oldest</option>
+      <option value="best-selling">Best Selling</option>
+    </select>
+  </div>
+  {% endif %}
+  
+  {% if collection.description.size > 0 %}
+  <div class="rte">
+    {{ collection.description }}
+  </div>
+  {% endif %}
+  
+</article>
+  
+  {% for product in collection.products %}
+	{% if product.tags contains 'hidden' %}
+		{% comment %} Don't output it {% endcomment %}
+	{% else %}
+    	{% include 'product-list-item' %}
+	{% endif %}
+  {% else %}
+    <p>There are no products in this view.</p>
+  {% endfor %}
+
+{% if paginate.pages > 1 %}
+<div class="pagination">
+  {{ paginate | default_pagination }}
+</div>
+{% endif %}
+
+{% endpaginate %}
+
+{% comment %}
+  JavaScript for collection sorting.
+{% endcomment %}
+<script>
+jQuery('.sort-by')
+  .val('{{ collection.sort_by | default: collection.default_sort_by }}')
+  .on('change', function() {
+    Shopify.queryParams.sort_by = jQuery(this).val();
+    location.search = jQuery.param(Shopify.queryParams);
+  });
+</script>

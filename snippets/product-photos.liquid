@@ -1,0 +1,31 @@
+<div class="product-photos">
+  
+  {% if product.images.size == 0 %}
+  
+  <div class="product-photo-container">
+    <img src="{{ '' | product_img_url: 'grande' }}" alt="" />
+  </div>
+  
+  {% else %}
+  
+  <div class="product-photo-container">
+    <a class="gallery" href="{{ product.featured_image | product_img_url: 'master' }}" rel="gallery" data-lightbox="product-images">
+      <img src="{{ product.featured_image | product_img_url: 'grande' }}" alt="{{ product.title | escape }}" />
+    </a>
+  </div>
+  
+  {% if product.images.size > 1 %}
+  <ul class="product-photo-thumbs clearfix grid">
+    {% for image in product.images offset:1 %}
+    <li class="product-photo-thumb" style="background-image:url({{ image.src | product_img_url: 'compact' }});">
+      <a class="gallery" href="{{ image.src | product_img_url: 'master' }}" rel="gallery" data-lightbox="product-images">
+        <img src="{{ image.src | product_img_url: 'compact' }}" alt="{{ image.alt | escape }}" />
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  
+  {% endif %}
+  
+</div><!-- .product-photos -->

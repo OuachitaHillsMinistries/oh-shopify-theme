@@ -1,0 +1,43 @@
+{% comment %}Is this product on sale?{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% assign imageQty = product.images | size %}
+
+<article class="plural {% unless product.available %} sold-out{% endunless %}{% if on_sale %} on-sale{% endif %}">
+	
+  {% if imageQty > 0 %}
+  <a href="{{ product.url | within: collection }}" style="background: url('{{ product.featured_image.src | product_img_url: 'grande' }}') no-repeat center center scroll;">
+    <img src="{{ product.featured_image.src | product_img_url: 'grande' }}" alt="{{ product.featured_image.alt | escape }}" />
+  </a>
+  {% endif %}
+  
+  <div class="details">
+    <header>
+      <h2 class="entry-title">
+        <a href="{{ product.url | within: collection }}">
+        	{{ product.title }}
+      	</a>
+      </h2>
+    </header>
+    <p>
+      {{ product.description | truncate: 250 }}
+    </p>
+    <p>
+      {% if product.price_varies %}From{% endif %}
+      	{{ product.price | money }}
+      {% if on_sale %}
+      	<s class="compare-at-price">{{ product.compare_at_price | money }}</s>
+      {% endif %}
+    </p>
+    <a class="read-more" href="{{ product.url | within: collection }}">More Details...</a>
+    {% comment %}
+    All themes by Shopify should support the Grapevine Reviews app out of the box.
+    https://apps.shopify.com/grapevine-reviews
+    {% endcomment %}
+    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+  </div>
+  
+</article>

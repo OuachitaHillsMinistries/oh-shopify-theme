@@ -1,0 +1,40 @@
+<div class="add-to-cart">
+
+	{% assign hide_default_title = false %}
+  {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+  {% assign hide_default_title = true %}
+  {% endif %}       
+  
+  <div id="product-variants" class="{% if hide_default_title %} hidden{% endif %}">
+    <select id="product-select" name="id">
+      {% for variant in product.variants %}
+      <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  
+  <div id="product-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+    <meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+    {% if product.available %}
+    <link itemprop="availability" href="http://schema.org/InStock" />
+    {% else %}
+    <link itemprop="availability" href="http://schema.org/OutOfStock" />
+    {% endif %}
+    <p>
+      {% if product.compare_at_price > product.price %}
+      <span class="product-price on-sale" itemprop="price">{{ product.price | money }}</span>&nbsp;<s class="product-compare-price">{{ product.compare_at_price_max | money }}</s>
+      {% else %}
+      <span class="product-price" itemprop="price">{{ product.price | money }}</span>
+      {% endif %}
+    </p>
+  </div>
+  
+  <div id="backorder" class="hidden">
+    <p>{{ '%s is back-ordered. We will ship it separately in 10 to 15 days.' | replace: '%s', '<span id="selected-variant"></span>' }}</p>
+  </div>
+  
+  <div id="product-add">
+    <input type="submit" name="add" id="add" class="button" value="Add to cart">
+  </div>
+
+</div>

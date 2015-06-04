@@ -1,0 +1,159 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="ie9 no-js"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js"> <!--<![endif]-->  
+<head>
+  <meta charset="utf-8" />
+  <!--[if IE]><meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1' /><![endif]-->
+
+  <title>
+  {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+  <meta name="description" content="{{ page_description | escape }}" />
+  {% endif %}
+
+  <link rel="canonical" href="{{ canonical_url }}" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  {% include 'open-graph-tags' %}
+  {% include 'twitter-card' %}
+
+  {{ content_for_header }}
+
+  {% include 'css' %}
+
+  <!--[if lt IE 9]>
+  {{ '//html5shiv.googlecode.com/svn/trunk/html5.js' | script_tag }}
+  <![endif]-->
+
+  {% if template contains 'customers' %}
+  {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+  {{ 'customer_area.js'  | shopify_asset_url | script_tag }}
+  {% endif %}
+  
+  <!-- Additional Shopify helpers that will likely be added to the global shopify_common.js some day -->
+  {{ 'shopify_common.js'  | asset_url | script_tag }}
+
+  {{ 'option_selection.js' | shopify_asset_url | script_tag }}
+
+  {{ '//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js' | script_tag }}
+  <script>jQuery('html').removeClass('no-js').addClass('js');</script>
+
+</head>
+
+<body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} layout-theme" >
+  
+  <div class="wrapper">
+
+    <header>
+      
+      {% comment %}
+      Older browsers don't support the HTML5 placeholder attribute, so it's a good idea to use JavaScript
+      to show and hide the placeholder text.
+      Have a look in assets/shop.js.liquid to see sample JavaScript for this.
+      {% endcomment %}
+      
+      {% if shop.customer_accounts_enabled %}
+      <p class="customer-links">
+        {% if customer %}
+          Logged in as <a href="/account">{{ customer.first_name }}</a> · {{ 'Log out' | customer_logout_link }}
+        {% else %}
+          {{ 'Log in' | customer_login_link }}
+          {% if shop.customer_accounts_optional %}
+          or {{ 'Create an account' | customer_register_link }}
+          {% endif %}
+        {% endif %}
+      </p>
+      {% endif %}
+      
+      {% include 'branding' %}
+      
+      {% comment %}
+        Main Navigation 
+      {% endcomment %}
+      {% include 'site-nav' %}
+      
+      {% if template contains "index" %}
+  		{% include 'slider' %}
+  		{% endif %}
+      
+    </header>
+
+    <div class="container" role="main">
+      <section id="content" role="main">
+        {% comment %}}
+        We have a template file to render.
+        That's what content_for_layout is for.
+        {% endcomment %}
+        {{ content_for_layout }}
+      </section>
+      <aside id="sidebar" role="complementary">
+        <ul>
+          <li id="search-2" class="widget-container widget_search">
+            <form action="/search" method="get" class="search-form" role="search">
+              <input name="q" type="text" id="search-field" placeholder="Search store..." class="hint" />
+              <input type="submit" id="search-submit" value="Search" />
+            </form>
+          </li>
+          <li class="widget-container">
+            {% comment %}
+            Note on checkout link: it is a good idea to avoid linking to /checkout directly because shops that use 
+            Paypal Express Checkout and/or Google Checkout have special checkout buttons on the /cart page. Also,
+            special instructions for the seller are entered on the /cart page.
+            {% endcomment %}
+            
+            <h3 class="widget-title">Cart</h3>
+            
+            <ul>
+              <li>
+              	<a href="/cart"><i class="fa fa-shopping-cart"></i> {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</a>
+              </li>
+              <li>
+              	<a href="/cart">Check out</a>
+              </li>
+            </ul>
+          </li>
+          <li class="widget-container">
+            {% unless shop.enabled_payment_types == empty %}
+            <h3 class="widget-title">Payment Methods</h3>
+            <div class="payment-types">
+              {% for type in shop.enabled_payment_types %}
+              <img width="50" src="{{ type | payment_type_img_url }}" />
+              {% endfor %}
+            </div>
+            {% endunless %}
+          </li>
+        </ul>
+      </aside>
+      <div class="clear"></div>
+    </div>
+
+    <footer id="footer" role="contentinfo">
+      <div id="copyright">
+      	&copy; {{ "now" | date: "%Y" }} Ouachita Hills Ministries. All Rights Reserved.
+      </div>
+      <div class="credits">
+        {% if linklists.footer.links.size > 0 %}
+        {% for link in linklists.footer.links %}
+          <a href="{{ link.url }}" title="{{ link.title }}"{% if link.active %} class="active"{% endif %}>{{ link.title }}</a>
+        {% endfor %}
+        {% endif %}
+      </div>
+    </footer>
+
+    {% comment %}Shopify does not support Internet Explorer 6 nor 7. It does encourage themes to support IE8 until the end of 2014.{% endcomment %}
+    <!--[if lt IE 8]>
+    <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+    <![endif]-->
+    
+  </div><!-- end of #container -->
+  
+  {% include 'scripts' %}
+  
+</body>
+</html>

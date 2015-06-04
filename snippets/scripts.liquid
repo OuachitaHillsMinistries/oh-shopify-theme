@@ -1,0 +1,18 @@
+{{ 'shop.js'  | asset_url | script_tag }}
+{{ 'jquery-1.11.0.min.js'  | asset_url | script_tag }}
+{{ 'jquery.pick.js' | asset_url | script_tag }}
+{{ 'lightbox.min.js'  | asset_url | script_tag }}
+<script src="http://ouachitahills.org/web-resources/FlexSlider-version-2.2/jquery.flexslider.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+  $(window).load(function() {
+    $('.flexslider').flexslider({
+        animation: "slide",
+      	controlNav: false
+    });
+  });
+  
+  jQuery(function() {
+    jQuery('.slides > li').pick(3);
+  });
+</script>

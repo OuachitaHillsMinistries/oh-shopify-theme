@@ -1,0 +1,35 @@
+<div class="add-to-cart donate">
+
+  {% assign hide_default_title = false %}
+  {% if product.variants.size == 1 and product.variants.first.title contains 'Default' %}
+  {% assign hide_default_title = true %}
+  {% endif %}       
+  
+  <div id="product-qty">
+    <label for="quantity">$ <input min="1" type="number" id="quantity" name="quantity" value="1" /> .00</label> 
+    <style>#quantity { padding:5px; width:50px; border: 1px solid #555; }</style>
+  </div>
+  
+  <div id="product-variants" class="{% if hide_default_title %} hidden{% endif %}">
+    <select id="product-select" name="id">
+      {% for variant in product.variants %}
+      <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  
+  <div id="product-property-other">            
+    <label for="other">Other</label>
+    <!--<input type="text" id="other" name="properties[Other]" />-->
+    <textarea id="other" name="properties[Other]" rows="2" cols="25"></textarea>
+  </div>
+  
+  <div id="backorder" class="hidden">
+    <p>{{ '%s is back-ordered. We will ship it separately in 10 to 15 days.' | replace: '%s', '<span id="selected-variant"></span>' }}</p>
+  </div>
+  
+  <div id="product-add">
+    <input type="submit" name="add" id="add" class="button" value="Add to cart">
+  </div>
+
+</div>

@@ -1,0 +1,14 @@
+
+<div id="flexslider_hg_homepage_wrapper" class="flexslider-hg-wrapper">
+  
+<div id="flexslider_hg_homepage" class="flexslider_hg_homepage flexslider">
+  <ul class="slides">
+    {% for product in collection.products %}
+    	<li>
+    		{% include 'product-list-item' %}
+    	</li>
+    {% endfor %}
+  </ul>
+</div>
+
+</div>

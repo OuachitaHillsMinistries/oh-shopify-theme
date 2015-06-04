@@ -1,0 +1,25 @@
+<section class="branding">
+      
+        {% comment %}
+        It would be nice if the logo was a shop setting, rather than a theme setting.
+        But for now, it is a theme setting. The shop logo is uploaded on the theme settings page.
+        Link to the theme settings page of currently published theme will always be:
+        http://www.shopify.com/admin/themes/current/settings.
+        To add theme settings to a theme, see this: http://docs.shopify.com/themes/theme-templates/settings
+        Theme settings are added to http://www.shopify.com/admin/themes/current#config/settings.html
+        {% endcomment %}
+      
+        {% if settings.use_logo %}
+        <a id="logo" href="http://ouachitahills.org/" role="banner">
+          {{ 'logo.png' | asset_url | img_tag: shop.name }}
+        </a><!-- #logo -->
+        {% endif %}
+        {% if template == 'index' %}
+        <h1 id="site-title"{% if settings.use_logo %} class="hidden"{% endif %}>
+          <a href="/">{{ shop.name }}</a>
+        </h1>
+        {% else %}
+        <a id="site-title" href="/"{% if settings.use_logo %} class="hidden"{% endif %}>{{ shop.name }}</a>
+        {% endif %}
+        
+</section>
