@@ -9,7 +9,8 @@
 {% endcomment %}
 
 <nav class="navigation horizontal" role="navigation">
-  <ul class="primary-nav">
+  
+  <ul class="nav">
     <li class="home">
       <a href="http://ouachitahills.org">Home</a>
     </li>
@@ -19,12 +20,6 @@
     <li class="academy">
       <a href="http://ouachitahills.org/academy/">Academy</a>
     </li>
-    <li class="store">
-      <a href="{{ shop.url }}">Store</a>
-    </li>
-  </ul>
-  
-  <ul class="secondary-nav">
     {% for link in linklists.main-menu.links %}
     {% assign has_sub_menu = false %}
     {% assign has_sub_categories = false %}
