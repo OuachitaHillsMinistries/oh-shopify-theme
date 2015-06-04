@@ -12,6 +12,7 @@ body {
 .container {
   border-radius:4px;
   background-color: white;
+  padding:20px;
 }
 
 .branding img {
@@ -33,10 +34,6 @@ body {
 }
 
 img, iframe { max-width: 100%; }
-
-.secondary-nav {
-  background-color:grey;
-}
 
 .layout-focus .container, .layout-focus #content {
   border-radius: 4px;
