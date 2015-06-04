@@ -1,0 +1,55 @@
+// Layout
+
+body {
+  margin:0;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, "Arial Narrow", Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  font-size: ohSizeStep(1);
+  height:100%;
+  line-height:normal;
+  background-color: #e6e6e6;
+}
+
+#wrapper {
+  margin:0 auto;
+}
+
+.main-header {
+  color:white;
+  width:100%;
+  position:relative;
+}
+
+#content {
+  height:100%;
+  overflow:hidden;
+  background-color:white;
+  @media all and (min-width: ohSizeStep($marginBreakPoint)) {
+    float:right;
+    width:100%;
+    border-radius:0 4px 4px 0;
+  }
+}
+
+#sidebar {
+  padding:ohSizeStep(.5);
+  overflow:hidden;
+  color:#242424;
+
+  .widget-area ul {
+    list-style-type:none;
+    margin:0;
+    padding:0;
+  }
+
+  @media all and (min-width: ohSizeStep($marginBreakPoint)) {
+    float:left;
+    width:ohSizeStep($sidebarWidth);
+    margin-left:- ohSizeStep($sidebarWidth);
+  }
+}
+
+#footer {
+  padding:ohSizeStep(1);
+  overflow:hidden;
+}
